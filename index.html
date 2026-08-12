@@ -1,0 +1,217 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Vyltrio — Automação que move a operação</title>
+<meta name="description" content="Automação, dados, monitoramento e integração para empresas que querem operar melhor.">
+<link rel="icon" href="vyltrio-mark.svg" type="image/svg+xml">
+<style>
+:root{
+ --bg:#03060b;--bg2:#07111d;--panel:#091523;--panel2:#0d1c2c;--line:#17314b;
+ --text:#f4f8ff;--muted:#8ca3ba;--muted2:#5e748c;--blue:#1769ff;--blue2:#2f7cff;
+ --blue3:#6cb2ff;--green:#58e1b2;--danger:#ff6e86;--shadow:0 30px 100px rgba(0,0,0,.35)
+}
+*{box-sizing:border-box}html{scroll-behavior:smooth}
+body{margin:0;color:var(--text);font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+background:
+radial-gradient(circle at 75% 8%,rgba(23,105,255,.16),transparent 23%),
+radial-gradient(circle at 4% 30%,rgba(47,124,255,.08),transparent 22%),
+linear-gradient(180deg,#02050a 0%,#06101a 52%,#02060b 100%);
+overflow-x:hidden}
+body:before{content:"";position:fixed;inset:0;pointer-events:none;opacity:.12;background-image:linear-gradient(rgba(255,255,255,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.03) 1px,transparent 1px);background-size:56px 56px;mask-image:linear-gradient(to bottom,#000,transparent 72%)}
+a{text-decoration:none;color:inherit}.container{width:min(1220px,calc(100% - 48px));margin:auto}
+
+nav{height:82px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid rgba(255,255,255,.07);position:relative;z-index:10}
+.brand{display:flex;align-items:center;gap:10px;font-size:23px;font-weight:950;letter-spacing:-.05em}.brand img{width:30px;height:30px}
+.navlinks{display:flex;align-items:center;gap:24px;color:var(--muted);font-size:14px}.navlinks a:hover{color:#fff}
+.btn{border:1px solid var(--line);border-radius:13px;padding:13px 18px;display:inline-flex;align-items:center;justify-content:center;gap:8px;font-size:13px;font-weight:850;transition:.2s;cursor:pointer}
+.btn:hover{transform:translateY(-2px)}.primary{background:linear-gradient(135deg,var(--blue),var(--blue2));color:#fff;border:0;box-shadow:0 15px 45px rgba(23,105,255,.2)}.secondary{background:#0a1624;color:#eaf2fb}
+.badge{display:inline-flex;align-items:center;gap:8px;color:#78b1ff;border:1px solid rgba(47,124,255,.35);background:rgba(23,105,255,.07);border-radius:999px;padding:8px 11px;font-size:10px;font-weight:900;letter-spacing:.12em;text-transform:uppercase}.badge i{width:6px;height:6px;border-radius:50%;background:#3d8aff;box-shadow:0 0 12px #3d8aff}
+
+.hero{min-height:760px;display:grid;grid-template-columns:1.03fr .97fr;gap:42px;align-items:center;padding:88px 0 72px}
+.hero h1{font-size:clamp(54px,7vw,92px);line-height:.92;letter-spacing:-.075em;margin:20px 0 20px;max-width:750px}.hero h1 em{font-style:normal;color:transparent;background:linear-gradient(90deg,#fff 5%,#4e99ff 60%,#1769ff);background-clip:text}
+.hero p{font-size:18px;line-height:1.72;color:var(--muted);max-width:660px}.actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:30px}
+.micro{display:flex;gap:18px;flex-wrap:wrap;margin-top:25px;color:#617891;font-size:11px}.micro span:before{content:"✓";color:#4a93ff;margin-right:6px;font-weight:900}
+
+.hero-art{min-height:560px;position:relative;display:grid;place-items:center}
+.art-frame{width:min(100%,570px);aspect-ratio:1/1;border:1px solid #16304b;border-radius:32px;position:relative;overflow:hidden;background:radial-gradient(circle at 50% 42%,rgba(23,105,255,.28),transparent 25%),linear-gradient(145deg,#091725,#02060b 70%);box-shadow:var(--shadow),inset 0 0 100px rgba(23,105,255,.04)}
+.art-frame:before{content:"";position:absolute;inset:14%;border:1px solid rgba(47,124,255,.18);border-radius:50%}.art-frame:after{content:"";position:absolute;inset:28%;border:1px solid rgba(47,124,255,.15);border-radius:50%}
+.center-logo{position:absolute;inset:0;display:grid;place-items:center}.center-logo img{width:205px;filter:drop-shadow(0 0 38px rgba(23,105,255,.35))}
+.orbit{position:absolute;border:1px dashed rgba(76,143,255,.2);border-radius:50%;animation:spin 18s linear infinite}.orbit.o1{inset:8%}.orbit.o2{inset:18%;animation-direction:reverse;animation-duration:14s}@keyframes spin{to{transform:rotate(360deg)}}
+.art-node{position:absolute;padding:11px 12px;border-radius:14px;background:rgba(6,16,28,.93);border:1px solid #234565;box-shadow:0 18px 50px rgba(0,0,0,.35);font-size:10px;color:#8faaca;backdrop-filter:blur(10px)}.art-node b{display:block;color:#fff;font-size:12px;margin-bottom:3px}.a1{left:6%;top:17%}.a2{right:6%;top:30%}.a3{left:9%;bottom:21%}.a4{right:8%;bottom:17%}
+.rail{position:absolute;height:1px;background:linear-gradient(90deg,transparent,#2f7cff,transparent);opacity:.75}.r1{width:220px;left:19%;top:34%;transform:rotate(19deg)}.r2{width:200px;right:17%;top:44%;transform:rotate(-17deg)}.r3{width:180px;left:18%;bottom:30%;transform:rotate(-17deg)}
+
+.section{padding:92px 0}.section-head{display:flex;justify-content:space-between;align-items:end;gap:32px;margin-bottom:30px}.section-head h2{font-size:43px;line-height:1;letter-spacing:-.055em;margin:0}.section-head p{max-width:555px;color:var(--muted);line-height:1.68;margin:0}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}.card{border:1px solid var(--line);background:linear-gradient(180deg,rgba(13,28,45,.94),rgba(6,15,25,.97));border-radius:22px;box-shadow:0 20px 70px rgba(0,0,0,.15)}
+.service{padding:29px;min-height:310px;position:relative;overflow:hidden}.service:before{content:"";position:absolute;width:150px;height:150px;border-radius:50%;background:rgba(23,105,255,.12);filter:blur(30px);right:-80px;top:-85px}.number{font-size:10px;letter-spacing:.14em;color:#5d9dff;font-weight:900}.service h3{font-size:28px;letter-spacing:-.04em;margin:35px 0 11px}.service p{font-size:14px;color:var(--muted);line-height:1.68}.chips{display:flex;flex-wrap:wrap;gap:7px;margin-top:22px}.chip{font-size:10px;padding:6px 8px;border-radius:8px;background:#0a1a2a;border:1px solid #17304a;color:#90aed1}
+
+.marquee{border-top:1px solid rgba(255,255,255,.06);border-bottom:1px solid rgba(255,255,255,.06);padding:16px 0;overflow:hidden;color:#6d839b;font-size:10px;letter-spacing:.13em;text-transform:uppercase;white-space:nowrap}.marquee-track{display:flex;gap:48px;width:max-content;animation:move 24s linear infinite}@keyframes move{to{transform:translateX(-50%)}}
+
+.workflow{display:grid;grid-template-columns:1fr 1fr;gap:16px}.pitch{padding:38px}.pitch h3{font-size:34px;letter-spacing:-.045em;margin:18px 0 12px}.pitch p{color:var(--muted);line-height:1.7}.steps{padding:26px}.step{display:flex;gap:14px;padding:18px 0;border-bottom:1px solid rgba(255,255,255,.07)}.step:last-child{border-bottom:0}.step-dot{width:34px;height:34px;border-radius:11px;display:grid;place-items:center;background:#1769ff18;border:1px solid #1d3a60;color:#64a5ff;font-weight:900;font-size:11px;flex:none}.step b{display:block;font-size:14px;margin:2px 0 4px}.step span{font-size:13px;color:var(--muted);line-height:1.52}
+
+.pricing{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;align-items:stretch}.price{padding:28px;position:relative}.price.featured{border-color:#2a6eff;box-shadow:0 25px 80px rgba(23,105,255,.11)}.price .flag{position:absolute;right:16px;top:16px;font-size:9px;text-transform:uppercase;letter-spacing:.12em;color:#77b1ff;border:1px solid #2a6eff55;background:#1769ff12;padding:6px 8px;border-radius:999px;font-weight:900}
+.price h3{font-size:22px;margin:0}.price .desc{min-height:49px;color:var(--muted);font-size:13px;line-height:1.5;margin:8px 0 24px}.price .from{font-size:10px;color:#6f89a5;text-transform:uppercase;letter-spacing:.12em}.price .amount{font-size:38px;letter-spacing:-.05em;font-weight:900;margin:2px 0 8px}.price .note{font-size:11px;color:var(--muted2)}.feature-list{list-style:none;padding:0;margin:24px 0 0;display:grid;gap:11px}.feature-list li{font-size:12px;color:#c2d1df}.feature-list li:before{content:"✓";color:#4c92ff;margin-right:8px;font-weight:900}
+
+.roi{display:grid;grid-template-columns:.9fr 1.1fr;gap:16px}.roi-card{padding:30px}.roi-card h3{font-size:28px;letter-spacing:-.04em;margin:0 0 8px}.roi-card p{color:var(--muted);line-height:1.6;font-size:13px}.roi-metric{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:24px}.metric{padding:18px;border-radius:15px;background:#06101b;border:1px solid #17304a}.metric b{display:block;font-size:28px}.metric span{font-size:10px;color:var(--muted);letter-spacing:.08em}
+
+.faq{display:grid;gap:10px}.faq details{border:1px solid var(--line);border-radius:14px;background:#091625;padding:18px 20px}.faq summary{cursor:pointer;font-weight:800;font-size:13px}.faq p{color:var(--muted);font-size:13px;line-height:1.6;padding-top:10px;margin:0}
+
+.final-cta{padding:64px;text-align:center;margin:20px 0 80px;overflow:hidden;position:relative}.final-cta:before{content:"";position:absolute;width:520px;height:280px;background:rgba(23,105,255,.15);filter:blur(90px);left:50%;top:50%;transform:translate(-50%,-50%)}.final-cta>*{position:relative}.final-cta h2{font-size:48px;line-height:1;letter-spacing:-.06em;max-width:820px;margin:18px auto 14px}.final-cta p{color:var(--muted);max-width:650px;margin:0 auto 28px;line-height:1.65}
+
+footer{border-top:1px solid rgba(255,255,255,.07);padding:30px 0 44px;color:#5f748c;font-size:11px;display:flex;justify-content:space-between;gap:20px}.foot-brand{display:flex;align-items:center;gap:8px;color:#a7bbcf;font-weight:850}.foot-brand img{width:18px;height:18px}
+
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.72);backdrop-filter:blur(12px);display:none;align-items:center;justify-content:center;padding:20px;z-index:50}.modal.open{display:flex}
+.modal-card{width:min(650px,100%);max-height:calc(100vh - 40px);overflow:auto;background:linear-gradient(180deg,#0b1a2a,#07111d);border:1px solid #214768;border-radius:24px;box-shadow:0 40px 120px rgba(0,0,0,.55);padding:28px}
+.modal-top{display:flex;justify-content:space-between;align-items:start;gap:15px}.modal-top h3{font-size:27px;letter-spacing:-.04em;margin:0}.modal-top p{color:var(--muted);font-size:12px;line-height:1.5;margin:6px 0 0}.close{width:38px;height:38px;border-radius:11px;border:1px solid var(--line);background:#091827;color:#b5c6d7;cursor:pointer;font-size:20px}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:22px}.field{display:grid;gap:6px}.field.full{grid-column:1/-1}.field label{font-size:11px;font-weight:800;color:#a8bfd4}.field input,.field textarea,.field select{width:100%;background:#06111d;border:1px solid #1b3b5c;color:#eef5fd;border-radius:11px;padding:12px 13px;outline:none;font:inherit;font-size:13px}.field textarea{min-height:125px;resize:vertical}.field input:focus,.field textarea:focus,.field select:focus{border-color:#3d8aff;box-shadow:0 0 0 3px rgba(23,105,255,.10)}.consent{display:flex;gap:8px;align-items:flex-start;margin-top:14px;color:#7f97ae;font-size:10px;line-height:1.5}.consent input{margin-top:2px;accent-color:var(--blue)}.form-actions{display:flex;justify-content:space-between;align-items:center;gap:15px;margin-top:20px}.form-status{font-size:11px;color:#78b1ff;min-height:18px}.success{display:none;text-align:center;padding:28px 10px}.success.show{display:block}.success .check{width:58px;height:58px;border-radius:18px;display:grid;place-items:center;margin:0 auto 15px;background:#1769ff17;border:1px solid #2f7cff66;color:#6eacff;font-size:27px}.success h4{font-size:25px;margin:0 0 8px}.success p{color:var(--muted);line-height:1.6;font-size:13px;max-width:430px;margin:auto}
+
+@media(max-width:960px){.hero{grid-template-columns:1fr;text-align:center}.hero p{margin:auto}.actions,.micro{justify-content:center}.hero-art{min-height:420px}.grid3,.workflow,.pricing,.roi{grid-template-columns:1fr}.section-head{align-items:flex-start;flex-direction:column}}
+@media(max-width:620px){.container{width:min(100% - 32px,1220px)}.navlinks a:not(.btn){display:none}.hero{padding-top:55px}.hero h1{font-size:52px}.art-frame{border-radius:23px}.center-logo img{width:145px}.art-node{font-size:9px}.art-node b{font-size:10px}.section{padding:68px 0}.final-cta{padding:40px 22px}.final-cta h2{font-size:36px}.form-grid{grid-template-columns:1fr}.field.full{grid-column:auto}.form-actions{align-items:stretch;flex-direction:column}footer{flex-direction:column}}
+</style>
+</head>
+<body>
+<div class="container">
+<nav>
+  <a class="brand" href="#"><img src="vyltrio-mark.svg" alt="Vyltrio">VYLTRIO</a>
+  <div class="navlinks">
+    <a href="#solucoes">Soluções</a>
+    <a href="#metodo">Método</a>
+    <a href="#planos">Planos</a>
+    <a href="#faq">FAQ</a>
+    <button class="btn primary open-contact">Falar com a Vyltrio</button>
+  </div>
+</nav>
+
+<section class="hero">
+  <div>
+    <span class="badge"><i></i> Automação · Dados · Operações</span>
+    <h1>Seu processo não precisa continuar <em>manual.</em></h1>
+    <p>A Vyltrio transforma tarefas repetitivas, sistemas desconectados e rotinas operacionais em fluxos rápidos, rastreáveis e escaláveis.</p>
+    <div class="actions">
+      <button class="btn primary open-contact">Quero mapear um processo</button>
+      <a class="btn secondary" href="vyltrio_data_demo.html">Ver demonstração</a>
+    </div>
+    <div class="micro"><span>Menos retrabalho</span><span>Mais controle</span><span>Dados no lugar certo</span></div>
+  </div>
+  <div class="hero-art">
+    <div class="art-frame">
+      <div class="orbit o1"></div><div class="orbit o2"></div>
+      <div class="center-logo"><img src="vyltrio-mark.svg" alt=""></div>
+      <div class="art-node a1"><b>FLOW</b>processos</div>
+      <div class="art-node a2"><b>DATA</b>informação</div>
+      <div class="art-node a3"><b>OPS</b>monitoramento</div>
+      <div class="art-node a4"><b>INTEGRAÇÃO</b>sistemas conectados</div>
+      <div class="rail r1"></div><div class="rail r2"></div><div class="rail r3"></div>
+    </div>
+  </div>
+</section>
+</div>
+
+<div class="marquee"><div class="marquee-track"><span>AUTOMAÇÃO DE PROCESSOS</span><span>INTEGRAÇÃO DE SISTEMAS</span><span>MONITORAMENTO</span><span>DADOS OPERACIONAIS</span><span>RPA</span><span>AUTOMAÇÃO DE PROCESSOS</span><span>INTEGRAÇÃO DE SISTEMAS</span><span>MONITORAMENTO</span><span>DADOS OPERACIONAIS</span><span>RPA</span></div></div>
+
+<div class="container">
+<section class="section" id="solucoes">
+  <div class="section-head"><h2>Três frentes.<br>Um objetivo.</h2><p>Resolver gargalos reais da operação — sem empurrar tecnologia onde ela não faz sentido.</p></div>
+  <div class="grid3">
+    <article class="card service"><div class="number">01 · FLOW</div><h3>Automação de processos</h3><p>Tarefas entre portais, planilhas, e-mails e sistemas deixam de depender de copiar, colar, conferir e repetir.</p><div class="chips"><span class="chip">RPA</span><span class="chip">Portais</span><span class="chip">Relatórios</span></div></article>
+    <article class="card service"><div class="number">02 · DATA</div><h3>Dados que trabalham</h3><p>Consolidação, validação, tratamento e atualização de bases para transformar arquivos soltos em informação utilizável.</p><div class="chips"><span class="chip">Excel</span><span class="chip">CSV</span><span class="chip">PDF</span></div></article>
+    <article class="card service"><div class="number">03 · OPS</div><h3>Operação sob controle</h3><p>Dashboards, alertas, históricos e indicadores para enxergar falhas, gargalos e oportunidades antes que cresçam.</p><div class="chips"><span class="chip">Dashboards</span><span class="chip">Alertas</span><span class="chip">KPIs</span></div></article>
+  </div>
+</section>
+
+<section class="section" id="metodo">
+  <div class="workflow">
+    <div class="card pitch"><span class="badge"><i></i> Nosso método</span><h3>Não vendemos código.<br>Vendemos tempo de volta.</h3><p>Começamos pelo processo. Medimos onde a equipe perde horas, identificamos a regra que pode ser automatizada e construímos só o que tem potencial de impacto.</p><button class="btn primary open-contact">Falar sobre meu processo</button></div>
+    <div class="card steps">
+      <div class="step"><div class="step-dot">01</div><div><b>Mapear</b><span>Entender rotina, frequência, sistemas, responsáveis e pontos de falha.</span></div></div>
+      <div class="step"><div class="step-dot">02</div><div><b>Estimar</b><span>Calcular esforço atual e o ganho potencial da automação.</span></div></div>
+      <div class="step"><div class="step-dot">03</div><div><b>Construir</b><span>Implementar uma solução enxuta, documentada e monitorável.</span></div></div>
+      <div class="step"><div class="step-dot">04</div><div><b>Medir</b><span>Comparar tempo, erros e capacidade operacional antes e depois.</span></div></div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="planos">
+  <div class="section-head"><h2>Faixas para começar.<br>Sem letra miúda.</h2><p>Valores de referência para projetos. O orçamento final depende do processo, integrações, volume e criticidade.</p></div>
+  <div class="pricing">
+    <article class="card price"><h3>Flow</h3><p class="desc">Para automatizar uma rotina ou fluxo repetitivo.</p><div class="from">a partir de</div><div class="amount">R$ 1.500</div><div class="note">projeto</div><ul class="feature-list"><li>1 processo principal</li><li>Automação entre sistemas/arquivos</li><li>Validações básicas</li><li>Documentação da solução</li></ul><button class="btn secondary open-contact" style="margin-top:24px;width:100%">Quero Flow</button></article>
+    <article class="card price featured"><div class="flag">Mais procurado</div><h3>Data</h3><p class="desc">Para consolidar, tratar e automatizar dados operacionais.</p><div class="from">a partir de</div><div class="amount">R$ 2.000</div><div class="note">projeto</div><ul class="feature-list"><li>Processamento de bases</li><li>Consolidação e validação</li><li>Relatórios e saídas automáticas</li><li>Regras de qualidade de dados</li></ul><button class="btn primary open-contact" style="margin-top:24px;width:100%">Quero Data</button></article>
+    <article class="card price"><h3>Ops</h3><p class="desc">Para monitorar uma operação e transformar dados em controle.</p><div class="from">a partir de</div><div class="amount">R$ 4.000</div><div class="note">projeto</div><ul class="feature-list"><li>Dashboard operacional</li><li>Alertas e indicadores</li><li>Histórico de eventos</li><li>Estrutura preparada para evolução</li></ul><button class="btn secondary open-contact" style="margin-top:24px;width:100%">Quero Ops</button></article>
+  </div>
+  <div style="margin-top:12px;color:#627a93;font-size:11px">Suporte e evolução recorrente: a partir de R$ 390/mês, conforme escopo.</div>
+</section>
+
+<section class="section">
+  <div class="roi">
+    <div class="card roi-card"><span class="badge"><i></i> A conta que importa</span><h3>Quanto custa manter o processo manual?</h3><p>Antes de falar em tecnologia, olhamos para horas gastas, retrabalho, erros e atrasos. O objetivo é descobrir se automatizar se paga.</p><div class="roi-metric"><div class="metric"><b>↓ horas</b><span>MENOS TRABALHO REPETITIVO</span></div><div class="metric"><b>↓ erros</b><span>MAIS PADRONIZAÇÃO</span></div></div></div>
+    <div class="card roi-card"><h3>Exemplo ilustrativo</h3><p>Uma rotina semanal que ocupa 4 horas de uma pessoa pode consumir mais de 200 horas em um ano. Automatizar parte desse trabalho pode liberar capacidade sem aumentar a equipe.</p><div class="roi-metric"><div class="metric"><b>4h / semana</b><span>ESFORÇO MANUAL</span></div><div class="metric"><b>200h+</b><span>POTENCIAL / ANO</span></div></div></div>
+  </div>
+</section>
+
+<section class="section" id="faq">
+  <div class="section-head"><h2>Perguntas que<br>normalmente aparecem.</h2><p>A ideia é começar simples, provar valor e escalar o que funciona.</p></div>
+  <div class="faq">
+    <details><summary>Vocês trabalham com qualquer empresa?</summary><p>Sim, desde que exista um processo repetitivo e mensurável em que a automação possa gerar ganho. O diagnóstico inicial serve justamente para avaliar isso.</p></details>
+    <details><summary>Preciso trocar os sistemas que já uso?</summary><p>Não necessariamente. A Vyltrio pode trabalhar entre os sistemas atuais, integrando informações ou automatizando etapas existentes.</p></details>
+    <details><summary>Os valores do site são fechados?</summary><p>Não. São faixas de entrada para orientar o investimento. O preço final depende do escopo, integrações, volume e criticidade.</p></details>
+    <details><summary>Como começo?</summary><p>Preencha o formulário de diagnóstico. Vamos entender seu processo e, se houver oportunidade real, combinar uma conversa para aprofundar.</p></details>
+  </div>
+</section>
+
+<section class="card final-cta" id="contato">
+  <span class="badge"><i></i> Diagnóstico inicial</span>
+  <h2>Mostre o problema.<br>A gente descobre o processo.</h2>
+  <p>Conte em poucas palavras onde sua equipe perde tempo hoje. O próximo passo pode ser uma conversa de 20 minutos para entender a oportunidade.</p>
+  <button class="btn primary open-contact">Quero agendar uma conversa</button>
+</section>
+
+<footer><div class="foot-brand"><img src="vyltrio-mark.svg"> Vyltrio · Automação que move a operação.</div><div>contato@vyltrio.com.br · vyltrio.com.br</div></footer>
+</div>
+
+<div class="modal" id="leadModal" aria-hidden="true">
+  <div class="modal-card">
+    <div class="modal-top"><div><h3>Vamos entender sua operação.</h3><p>Preencha os dados abaixo e conte, em poucas palavras, qual problema você quer resolver. A Vyltrio entra em contato para alinhar uma conversa.</p></div><button class="close" id="closeModal" aria-label="Fechar">×</button></div>
+    <form id="leadForm">
+      <div class="form-grid">
+        <div class="field"><label for="name">Nome *</label><input id="name" name="name" required placeholder="Seu nome"></div>
+        <div class="field"><label for="company">Empresa *</label><input id="company" name="company" required placeholder="Nome da empresa"></div>
+        <div class="field"><label for="email">E-mail *</label><input id="email" name="email" type="email" required placeholder="voce@empresa.com.br"></div>
+        <div class="field"><label for="phone">Telefone / WhatsApp *</label><input id="phone" name="phone" required placeholder="(12) 99999-9999"></div>
+        <div class="field full"><label for="problem">Em poucas palavras: qual problema você quer resolver? *</label><textarea id="problem" name="problem" required maxlength="900" placeholder="Ex.: Hoje minha equipe gasta várias horas por semana consolidando planilhas e conferindo dados de 3 sistemas diferentes."></textarea></div>
+      </div>
+      <label class="consent"><input type="checkbox" required><span>Autorizo a Vyltrio a usar os dados acima para entrar em contato sobre esta solicitação.</span></label>
+      <div class="form-actions"><span class="form-status" id="formStatus"></span><button class="btn primary" type="submit">Enviar e solicitar conversa</button></div>
+    </form>
+    <div class="success" id="successBox"><div class="check">✓</div><h4>Recebemos sua solicitação.</h4><p>Obrigado. A equipe da Vyltrio recebeu seus dados e poderá entrar em contato para entender o processo e combinar o próximo passo.</p><button class="btn secondary" id="successClose" type="button" style="margin-top:20px">Fechar</button></div>
+  </div>
+</div>
+
+<script>
+const modal=document.getElementById('leadModal'), form=document.getElementById('leadForm'), successBox=document.getElementById('successBox'), statusEl=document.getElementById('formStatus');
+document.querySelectorAll('.open-contact').forEach(b=>b.addEventListener('click',()=>{modal.classList.add('open');modal.setAttribute('aria-hidden','false');document.getElementById('name').focus()}));
+function closeModal(){modal.classList.remove('open');modal.setAttribute('aria-hidden','true')}
+document.getElementById('closeModal').addEventListener('click',closeModal);
+document.getElementById('successClose').addEventListener('click',closeModal);
+modal.addEventListener('click',e=>{if(e.target===modal)closeModal()});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&modal.classList.contains('open'))closeModal()});
+
+form.addEventListener('submit',async e=>{
+ e.preventDefault();statusEl.textContent='Enviando...';
+ const data=Object.fromEntries(new FormData(form).entries());
+ try{
+   const res=await fetch('https://formsubmit.co/ajax/comercial@vyltrio.com.br',{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify({
+     _subject:'Novo lead — Vyltrio',
+     _template:'table',
+     name:data.name,company:data.company,email:data.email,phone:data.phone,problem:data.problem
+   })});
+   const out=await res.json().catch(()=>({success:res.ok}));
+   if(!res.ok || out.success===false) throw new Error('Falha');
+   form.style.display='none';successBox.classList.add('show');statusEl.textContent='';
+ }catch(err){
+   statusEl.textContent='Não foi possível enviar agora. Tente novamente em instantes.';
+ }
+});
+</script>
+</body>
+</html>
